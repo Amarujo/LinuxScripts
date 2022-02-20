@@ -20,8 +20,14 @@ fi
 #start web browser and navigate to paperless-ng webui
 xdg-open http://127.0.0.1:8000
 
+#open simple-scan 
+simple-scan </dev/null> &>/dev/null & 
+
 #wait until the user confirms  they are done
 read -p "Press any key when scanning is finished"
+
+#kill simple-scanner
+sudo pkill simple-scan
 
 #turn off containers
 docker-compose -f /path/to/docker-compose.yml ocker-compose.yml down
