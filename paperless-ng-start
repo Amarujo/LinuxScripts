@@ -25,5 +25,7 @@ read -p "Press any key when scanning is finished"
 
 #turn off containers
 docker-compose -f /path/to/docker-compose.yml ocker-compose.yml down
+
+#shut down the browser session
 wmctrl -c "Paperless-ng"
 
