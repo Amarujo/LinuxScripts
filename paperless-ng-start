@@ -5,8 +5,8 @@
 #this script will check if it's running, then turn it on, and turn it off when browser window is closed
 
 #Set variables to reduce clutter
-CONTAINER="docker-compose -f /home/andy/docker-compose/paperless-ng/paperless-ng/docker-compose.yml up -d"
-STATUS="docker-compose -f /home/andy/docker-compose/paperless-ng/paperless-ng/docker-compose.yml ps -a"
+CONTAINER="docker-compose -f /path/to/docker-compose.yml up -d"
+STATUS="docker-compose -f /path/to/docker-compose.yml ps -a"
 
 #if the containres aren't running, turn them on, wait before 
 if [ $( docker ps -a -f name=paperless* | wc -l ) -eq 5 ]; then
@@ -24,6 +24,6 @@ xdg-open http://127.0.0.1:8000
 read -p "Press any key when scanning is finished"
 
 #turn off containers
-docker-compose -f /home/andy/docker-compose/paperless-ng/paperless-ng/docker-compose.yml down
+docker-compose -f /path/to/docker-compose.yml ocker-compose.yml down
 wmctrl -c "Paperless-ng"
 
