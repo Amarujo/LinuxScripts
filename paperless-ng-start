@@ -2,7 +2,9 @@
 
 #this script is used to run the paperless-ng container on a laptop
 #rather than letting the container and docker daemon run continously, i'd like to have it off by default
-#this script will check if it's running, then turn it on, and turn it off when browser window is closed
+#this script will automate the opening and closing the container, browser, and simple-scan app.  
+#I'd like to eventually add rsync afterwards to make sure docker container volumes are synced
+#and the local documents are backed up too
 
 #Set variables to reduce clutter
 CONTAINER="docker-compose -f /path/to/docker-compose.yml up -d"
