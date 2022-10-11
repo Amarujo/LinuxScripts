@@ -1,6 +1,7 @@
 #!/bin/bash
-#Creates a new distributor sftp user with no login shell, random password, home directory, and member of sftpusers grou>#run script followed by username
-#example: ./create_user_user.sh testuser
+#Creates a new distributor sftp user with no login shell, random password, home directory, and member of sftpusers group
+#run script followed by username
+#example: sudo ./create_user_user.sh testuser
 
 USER=$1
 if [ -z "$1" ]; then
