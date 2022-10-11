@@ -10,7 +10,7 @@ fi
 PASSWORD=$(pwgen -Bcn 10 1)
 
 useradd -m -d /home/users/$USER  -G sftpusers --shell=/bin/false $USER
-
+chown root:sftpusers -R /home/users/$USER/* 
 echo "$USER:$PASSWORD" | chpasswd
 echo "Account created"
 echo "Username: $USER"
