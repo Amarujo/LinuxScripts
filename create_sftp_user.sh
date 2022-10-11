@@ -11,7 +11,6 @@ fi
 
 PASSWORD=$(pwgen -Bcn 10 1)
 
-
 useradd -m -d /home/users/$USER  -G sftpusers --shell=/bin/false $USER
 
 mkdir /home/users/$USER/invoices
