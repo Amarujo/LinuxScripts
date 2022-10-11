@@ -9,7 +9,7 @@ if [ -z "$1" ]; then
 fi
 PASSWORD=$(pwgen -Bcn 10 1)
 
-useradd -m -d /home/$USER  -G sftpusers --shell=/bin/false $USER
+useradd -m -d /home/users/$USER  -G sftpusers --shell=/bin/false $USER
 
 echo "$USER:$PASSWORD" | chpasswd
 echo "Account created"
