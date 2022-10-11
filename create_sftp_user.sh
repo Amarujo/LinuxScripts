@@ -15,7 +15,7 @@ useradd -m -d /home/users/$USER  -G sftpusers --shell=/bin/false $USER
 
 mkdir /home/users/$USER/invoices
 chown root:$USER /home/users/$USER/
-chown root:sftpusers /home/users/$USER/invoices
+chown $USER:$USER/home/users/$USER/invoices
 
 echo "$USER:$PASSWORD" | chpasswd
 echo "Account created"
