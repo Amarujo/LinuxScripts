@@ -5,12 +5,12 @@
 
 FSTAB="bindfs#/home/files /home/users/$USER/files fuse force-user=$USER,force-group=$USER,create-for-user=$USER,create-for-group=sftpusers,create-with-perms=0750,chgrp-ignore,chown-ignore,chmod-ignore 1 2"
 USER=$1
+PASSWORD=$(pwgen -Bcn 10 1)
+
 if [ -z "$1" ]; then
     echo "No username given"
     exit 1
 fi
-
-PASSWORD=$(pwgen -Bcn 10 1)
 
 useradd -m -d /home/users/$USER  -G sftpusers --shell=/bin/false $USER
 
