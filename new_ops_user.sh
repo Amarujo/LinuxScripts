@@ -3,6 +3,7 @@
 #run script followed by username
 #example: sudo ./create_ops_user.sh testuser
 
+FSTAB="bindfs#/home/files /home/users/$USER/files fuse force-user=$USER,force-group=$USER,create-for-user=$USER,create-for-group=sftpusers,create-with-perms=0750,chgrp-ignore,chown-ignore,chmod-ignore 1 2"
 USER=$1
 if [ -z "$1" ]; then
     echo "No username given"
@@ -17,7 +18,7 @@ mkdir /home/users/$USER/files
 chown root:$USER /home/users/$USER/
 chown $USER:$USER /home/users/$USER/files
 
-echo "bindfs#/home/files /home/users/$USER/files fuse force-user=$USER,force-group=$USER,create-for-user=$USER,create-for-group=sftpusers,create-with-perms=0750,chgrp-igno>LINE=$(sudo cat /etc/fstab | wc -l)
+echo "$FSTAB" | sudo tee -a /etc/fstab  1>/dev/null
 LINE=$(sudo cat /etc/fstab | wc -l)
 mount -a
 sudo sed -i  "$LINE s/^/#/" /etc/fstab
