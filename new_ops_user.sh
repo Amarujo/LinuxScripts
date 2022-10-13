@@ -24,8 +24,8 @@ chown $USER:$USER /home/users/$USER/files
 
 #bindfs the users FILES directory to /home/files with appropriate permissions in FSTAB
 #mount and then immediately comment it out to prevent errors 
-echo "bindfs#/home/files /home/$USER/files fuse force-user=$USER,force-group=$USER,create-for-user=$USER,create-for-group=sftpusers,create-with-perms=0750,chgrp-ignore,chown-ignore,chmod-ignore 1 2" | sudo tee -a /etc/fstab
-mount -a
+FSTAB="bindfs#/home/files /home/$USER/files fuse force-user=$USER,force-group=$USER,create-for-user=$USER,create-for-group=sftpusers,create-with-perms=0750,chgrp-ignore,chown-ignore,chmod-ignore 1 2" 
+echo $FSTAB | sudo tee -a /etc/fstab  1>/dev/null && mount  -a;;
 sed -i -e '2s/^/# /' /etc/fstab
 
 #update users password and print out information 
