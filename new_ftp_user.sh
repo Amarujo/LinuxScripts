@@ -1,7 +1,7 @@
 #!/bin/bash
   
 
-#creates new user for ftp.buyersedgepurchasing.com 
+#creates new distributor for ftp.buyersedgepurchasing.com 
 #can also be used to create an operations user with access to the entire home/ftp/ directory
 
 #set variables
@@ -16,7 +16,7 @@ fi
 echo "$USER" >> /etc/vsftpd/virtual-users-be.txt
 echo "$PASSWORD" >> /etc/vsftpd/virtual-users-be.txt
 
-#run makefil to move these credentials to the database that VSFTP loads from
+#run make against make file in /etc/vsftpd to move these credentials to the database that VSFTP loads from
 make -C /etc/vsftpd
 
 #Make users home directory and set ownership to vds
