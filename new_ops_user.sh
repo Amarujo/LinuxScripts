@@ -1,35 +1,35 @@
-#!/bin/bash
+#To be used on FTP.BUYERSEDGEPLATFORM.COM
+#Creates a new operations user with access to the /home/users/ directory.
+#user will have no login shell, random password, home directory, and be member of sftpusers group
+#run script with sudo followed by username
+#example: sudo ./create_ops_user.sh testuser
 
-#set variables
-PASSWORD=$(pwgen -Bcn 10 1)
+#run script with username in first place holder variable
 USER=$1
 if [ -z "$1" ]; then
     echo "No username given"
     exit 1
 fi
 
-#Add user to  /etc/vsftpd/virtual-users-be.txt
-echo "$USER" >> /etc/test.txt
-echo "$PASSWORD" >> /etc/test.txt
-#sudo /etc/vsftpd/make
+#set random password
+PASSWORD=$(pwgen -Bcn 10 1)
 
-#Make users home directory and set ownership to vds
-mkdir /home/ftp/$USER
-chown vds.vds /home/ftp/$USER
-#service vsftpd restart
+#user is created with the following parameters: no shell, member of sftpusers group, home directory in /home/users/
+useradd -m -d /home/users/$USER  -G sftpusers --shell=/bin/false $USER
 
-#if the user is a operations user, bind mount them to the home/ftp directory.
-FSTAB="/home/ftp /home/ftp/$USER  none   bind   0 0"
-#echo "Is this person an BEP Employee?"
-#read ANSWER
-#if [ "$ANSWER" == 'y' ]; then
-#   echo $FSTAB  | sudo tee -a /etc/fstab
-#fi
+#make a FILES directory and set appropriate ownership, this is will the ops user will view all distributor files
+mkdir /home/users/$USER/files
+chown root:$USER /home/users/$USER/
+chown $USER:$USER /home/users/$USER/files
 
-read -p "Is this user a BEP empoyee? (y/n) " yn
- case $yn in
-     [yY] ) echo $FSTAB | sudo tee -a /etc/fstab  1>/dev/null && mount  -a;;
-     [nN] ) echo  "User has been created, see details below";;
- esac
+#bindfs the users FILES directory to /home/files with appropriate permissions in FSTAB
+#mount and then immediately comment it out to prevent errors 
+echo "bindfs#/home/files /home/$USER/files fuse force-user=$USER,force-group=$USER,create-for-user=$USER,create-for-group=sftpusers,create-with-perms=0750,chgrp-ignore,chown-ignore,chmod-ignore 1 2" | sudo tee -a /etc/fstab
+mount -a
+sed -i -e '2s/^/# /' /etc/fstab
+
+#update users password and print out information 
+echo "$USER:$PASSWORD" | chpasswd
+echo "Account created"
 echo "Username: $USER"
 echo "Password: $PASSWORD"
