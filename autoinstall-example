@@ -1,0 +1,27 @@
+#cloud-config
+autoinstall:
+  version: 1
+  user-data:
+    hostname: ubuntu-server
+    users:
+      - name: andy
+        lock_passwd: true
+        ssh_authorized_keys:
+          - ssh-rsa <key>
+  ssh:
+    install-server: true
+    allow-pw: no
+  network:
+    network:
+      version: 2
+      ethernets:
+        enwild:
+          match:
+            name: en*
+          addresses:
+            - 192.168.1.115/24
+          dhcp4: false
+          gateway4: 192.168.1.1
+          nameservers:
+            addresses:
+              - 192.168.1.222
