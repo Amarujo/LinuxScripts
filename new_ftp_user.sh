@@ -1,40 +1,37 @@
+#!/bin/bash
+  
 
-ftp.buyersedgepurchsaing.com or diningalliance (public IP 34.206.245.49, AWS hostname be-ftp01.dm.buyersedge.org)
+#creates new user for ftp.buyersedgepurchasing.com 
+#can also be used to create an operations user with access to the entire home/ftp/ directory
 
-1) Edit the text file: /etc/vsftpd/virtual-users-be.txt (or virtual-users-da.txt for the DA server)
-       Lines in these files alternate between username and password
-2) run "sudo make" to move those credentials to a database that VSFTP loads from, 
-    Also have to add the user folder and use "chown vds.vds (chown vds.vds /home/ftp/newdistributor)
-3) run "service vsftpd restart" to make the service restart and load the new credentials
-4) bind operations users to ftp directory 
-​
-
-how to bind mount ftp users to ops users (one off, must be done if server reboots)
-----------------------------------------
-mount --bind /home/ftp /home/ftp/[ops user directory]
-
-how to permanently bind mount user (will persists across reboots)
-----------------------------------------
-echo '/home/ftp /home/ftp/[ops user directory] none    bind    0 0'  >>  sudo /etc/fstab
-
-##SCRIPT STARTS HERE
-
+#set variables
+PASSWORD=$(pwgen -Bcn 10 1)
 USER=$1
 if [ -z "$1" ]; then
     echo "No username given"
     exit 1
 fi
 
-PASSWORD=$(pwgen -Bcn 10 1)
+#Add user name and password  to  /etc/vsftpd/virtual-users-be.txt (lines in this file alternate between username and password)
+echo "$USER" >> /etc/vsftpd/virtual-users-be.txt
+echo "$PASSWORD" >> /etc/vsftpd/virtual-users-be.txt
 
-echo "$USER" >> /etc/test.txt
-echo "PASSWORD" >> /etc/test.txt
+#run makefil to move these credentials to the database that VSFTP loads from
+make -C /etc/vsftpd
 
+#Make users home directory and set ownership to vds
 mkdir /home/ftp/$USER
 chown vds.vds /home/ftp/$USER
 service vsftpd restart
 
-echo "Is this person an BEP Employee?"
-read ANSWER
-if [ $ANSWER eq y]; then
-   
+#if the user is a operations user, bind mount them to the /home/ftp directory.
+FSTAB="/home/ftp /home/ftp/$USER  none   bind   0 0"
+read -p "Is this user a BEP empoyee? (y/n)" yn
+    case $yn in
+      [yY] ) echo $FSTAB | sudo tee -a /etc/fstab  1>/dev/null && mount  -a;;
+      [nN] ) echo  "User has been created, see details below";;
+    esac
+
+#Print out user details 
+echo "Username: $USER"
+echo "Password: $PASSWORD"
