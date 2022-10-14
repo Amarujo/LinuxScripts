@@ -2,7 +2,7 @@
   
 
 #creates new distributor for ftp.buyersedgepurchasing.com 
-#can also be used to create an operations user with access to the entire home/ftp/ directory
+#if the user is also an operation users, answer Y to "Is this user a BEP empoyee? (y/n)"
 
 #set variables
 PASSWORD=$(pwgen -Bcn 10 1)
