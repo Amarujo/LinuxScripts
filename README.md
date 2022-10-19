@@ -1,2 +1,2 @@
 # LinuxScripts
-Assortment of linux bash scrips and other useful guides.
+Assortment of linux bash scripts and other useful guides.
